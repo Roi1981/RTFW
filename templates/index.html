@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Feedback System</title>
+</head>
+<body>
+    <h1>Welcome to the Feedback System</h1>
+    <form id="qrForm">
+        <label for="business_name">Enter Business Name:</label>
+        <input type="text" id="business_name" name="business_name" required>
+        <button type="button" onclick="generateQR()">Generate QR Code</button>
+    </form>
+    <div id="qrCode"></div>
+    <script>
+        async function generateQR() {
+            const business_name = document.getElementById('business_name').value;
+            const response = await fetch('/generate_qr', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({business_name})
+            });
+            const data = await response.json();
+            document.getElementById('qrCode').innerHTML = `<img src="data:image/png;base64,${data.qr_code}" alt="QR Code">`;
+        }
+    </script>
+</body>
+</html>
